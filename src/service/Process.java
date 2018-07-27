@@ -1,5 +1,7 @@
 package service;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,26 +13,33 @@ public class Process {
 	public static boolean FrequentItemSets(List<Attribute> list, Float minsup) {
 		List<String> list_thuc_the = listThucThe(list);
 		
-		int num_attribute_before, num_attribute_after =0;
+		int num_attribute_before, num_attribute_after = 0, count = 0;
 		boolean check = true;
 		List<String> list_match = new ArrayList<>(); 
 		for (String string : list_thuc_the) {
-			num_attribute_before = string.split(",").length;
+			num_attribute_before = string.split(" ").length;
 			
 			if (num_attribute_after < num_attribute_before) {
-				//outputToFile();
-			}
-			
-			for (int i = 0; i < list.get(0).getmData().size(); i++) {
-				for (String str : string.split(",")) {
-					for (int j = 0; j < list.size(); j++) {
-						
+				for (int i = 0; i < list_match.size(); i++) {
+					if(Float.valueOf(list_match.get(i).split(" ")[0]) > minsup) {
+						// output number
 					}
 				}
 			}
 			
-			if (check) {
-				check = true;
+			for (int i = 0; i < list.get(0).getmData().size(); i++) {
+				for (String str : string.split(" ")) {
+					for (int j = 0; j < list.size(); j++)
+						if(Integer.valueOf(str) == list.get(j).getmIndex() && list.get(j).getmData().get(i) == 0)
+							check = false;
+				}
+				
+				if(check == true) count++;
+				else check = true;
+			}
+			
+			if (count > 0) {
+				list_match.add((new DecimalFormat("##.00").format(count*100/list.get(0).getmData().size())) + " " + string);
 			}
 			
 			num_attribute_after = num_attribute_before;
@@ -83,7 +92,7 @@ public class Process {
 	
 	static boolean searchInListTK(List<String> list_key, String str,Integer lenth) {
 		for (String string : list_key) {
-			if(string.equalsIgnoreCase(str) && lenth == string.split(",").length)
+			if(string.equalsIgnoreCase(str) && lenth == string.split(" ").length)
 				return true;
 		}
 		return false;
@@ -96,7 +105,7 @@ public class Process {
 		
 		str=list.get(0).toString();
 		for (int i = 1; i < list.size(); i++) {
-			str += "," + list.get(i).toString();
+			str += " " + list.get(i).toString();
 		}
 		
 		return str;
