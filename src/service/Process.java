@@ -10,23 +10,13 @@ import model.Attribute;
 public class Process {
 	static List<Integer> key =new ArrayList<>();
 	
-	public static boolean FrequentItemSets(List<Attribute> list, Float minsup) {
+	public static List<String> FrequentItemSets(List<Attribute> list) {
 		List<String> list_thuc_the = listThucThe(list);
 		
-		int num_attribute_before, num_attribute_after = 0, count = 0;
+		int count = 0;
 		boolean check = true;
 		List<String> list_match = new ArrayList<>(); 
 		for (String string : list_thuc_the) {
-			num_attribute_before = string.split(" ").length;
-			
-			if (num_attribute_after < num_attribute_before) {
-				for (int i = 0; i < list_match.size(); i++) {
-					if(Float.valueOf(list_match.get(i).split(" ")[0]) > minsup) {
-						// output number
-					}
-				}
-			}
-			
 			for (int i = 0; i < list.get(0).getmData().size(); i++) {
 				for (String str : string.split(" ")) {
 					for (int j = 0; j < list.size(); j++)
@@ -39,13 +29,11 @@ public class Process {
 			}
 			
 			if (count > 0) {
-				list_match.add((new DecimalFormat("##.00").format(count*100/list.get(0).getmData().size())) + " " + string);
+				list_match.add((new DecimalFormat("##.00").format(count/list.get(0).getmData().size())) + " " + string);
 			}
-			
-			num_attribute_after = num_attribute_before;
 		}
 		
-		return false;
+		return list_match;
 	}
 	
 	static List<String> listThucThe(List<Attribute> list){
@@ -112,6 +100,6 @@ public class Process {
 	}
 	
 	public static void main(String[] args) {
-		FrequentItemSets(null, null);
+		FrequentItemSets(null);
 	}
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ReadFileService {
 
-    public List<Attribute> readFile(String fileName) throws IOException {
+    public static List<Attribute> readFile(String fileName) throws IOException {
         List<Attribute> attributes = new ArrayList<>();
         File file = new File(fileName);
         if (!file.exists()) {
