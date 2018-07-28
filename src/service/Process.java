@@ -1,6 +1,5 @@
 package service;
 
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +9,7 @@ import model.Attribute;
 public class Process {
 	static List<Integer> key =new ArrayList<>();
 	
-	public static List<String> FrequentItemSets(List<Attribute> list) {
+	public static List<String> FrequentItemSets(List<Attribute> list, Float minsup) {
 		List<String> list_thuc_the = listThucThe(list);
 		
 		int count = 0;
@@ -28,8 +27,9 @@ public class Process {
 				else check = true;
 			}
 			
-			if (count > 0) {
-				list_match.add((new DecimalFormat("##.00").format(count/list.get(0).getmData().size())) + " " + string);
+			if (count > 0 && (float)count/list.get(0).getmData().size() >= minsup) {
+				list_match.add((new DecimalFormat("0.00").format((float)count/list.get(0).getmData().size())) + " " + string);
+				count = 0;
 			}
 		}
 		
@@ -52,11 +52,11 @@ public class Process {
 		return list_key;
 	}
 	
-	public static Integer toHop(Integer n, Integer k) {
+	static Integer toHop(Integer n, Integer k) {
 		return giaiThua(n, 1) / (giaiThua(n - k, 1) * giaiThua(k, 1));
 	}
 	
-	public static Integer giaiThua(Integer n, Integer i) {
+	static Integer giaiThua(Integer n, Integer i) {
 		if(i==n) return i;
 		return i * giaiThua(n, i+1);
 	}
@@ -97,9 +97,5 @@ public class Process {
 		}
 		
 		return str;
-	}
-	
-	public static void main(String[] args) {
-		FrequentItemSets(null);
 	}
 }

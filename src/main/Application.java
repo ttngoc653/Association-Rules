@@ -1,16 +1,21 @@
 package main;
 
 import model.Attribute;
+import service.Process;
 import service.ReadFileService;
+import service.WriteFileService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Scanner;
 
 public class Application {
 
-    public static void main(String[] args) {
-        //TODO lấy các input từ tham số dòng lệnh ở đây để làm câu 2 và câu 3
-        ReadFileService fileService = new ReadFileService();
+    private static final Scanner SCANNER = new Scanner(System.in);
+
+	public static void main(String[] args) {
+        /*
+    	ReadFileService fileService = new ReadFileService();
         try {
             List<Attribute> attributes = fileService.readFile("example.csv");
 
@@ -19,7 +24,25 @@ public class Application {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
+    	
+    	try {
+			List<Attribute> list_attribute = ReadFileService.readFile("example.csv");
+			
+			System.out.println("Input minsup: ");
+			Float minsup = SCANNER.nextFloat();
+			
+			List<String> list_exam = Process.FrequentItemSets(list_attribute, minsup);
+			
+			for (String string : list_exam) {
+				System.out.println(string);
+			}
+			System.out.println("da ghi ra file");
+			WriteFileService.FI(list_exam, "FI.txt");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
 }

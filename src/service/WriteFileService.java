@@ -5,8 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import model.Attribute;
-
 public class WriteFileService {
 	@SuppressWarnings("unused")
 	private static Integer countNumMang(List<String> list, Integer num) {
@@ -18,22 +16,20 @@ public class WriteFileService {
 		return i;
 	}
 	@SuppressWarnings({ "unused", "resource" })
-	public static boolean FI(List<String> list,String str) {
-		//List<String> list1 = Process.FrequentItemSets(list);
-		
-	    try {
-			FileWriter fw = new FileWriter(new File(str));
+	public static boolean FI(List<String> list,String str_file_name_out) {
+		try {
+			FileWriter fw = new FileWriter(new File(str_file_name_out));
 			
-			for (int i = 0; i < list.get(list.size() - 1).split(" ").length; i++) {
-				Integer count = countNumMang(list, i+1);
-				if(count > 0) {
-					fw.write(Integer.toString(i+1));
+			for (int i = 1; i < list.get(list.size() - 1).split(" ").length; i++) {
+				Integer count = countNumMang(list, i);
+					fw.write(Integer.toString(count)+"\n");
 					for (String string : list) {
-						if(string.split(" ").length == i + 1) fw.write(string);
-						else if(string.split(" ").length > i + 1) break;
+						if(string.split(" ").length == i+1) fw.write(string+"\n");
+						else if(string.split(" ").length > i+1) break;
 					}
-				}
 			}
+			
+			fw.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
